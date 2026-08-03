@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyBuy Shop</title>
+  <style>
+    :root {
+      --primary: #4c61ad;
+      --secondary: #1a84bd;
+      --accent: #82d8f7;
+      --bg: #20315f;
+      --surface: rgba(255, 255, 255, 0.16);
+      --surface-strong: rgba(255, 255, 255, 0.4);
+      --text: #f0f5ff;
+      --muted: #d3dcee;
+      --border: rgba(255, 255, 255, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top left, rgba(105, 147, 255, 0.25), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(255, 204, 226, 0.15), transparent 28%),
+        linear-gradient(180deg, #122040 0%, #1c315c 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      margin-left: 24px;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    main {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    .hero {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      backdrop-filter: blur(22px);
+      padding: 34px 36px;
+      margin-bottom: 32px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.16);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 2.5vw, 3.2rem);
+      margin-bottom: 14px;
+      line-height: 1.05;
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 750px;
+      font-size: 1rem;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
+      backdrop-filter: blur(18px);
+      transition: transform 0.25s ease, border-color 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .product-card img {
+      width: 100%;
+      border-radius: 24px;
+      display: block;
+      margin-bottom: 20px;
+      filter: saturate(1.05);
+    }
+
+    .product-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .product-card p {
+      color: var(--muted);
+      margin-bottom: 18px;
+      min-height: 52px;
+      font-size: 0.98rem;
+    }
+
+    .product-card .price {
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: #e0f7ff;
+    }
+
+    .product-card button {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .product-card button:hover {
+      transform: translateY(-2px);
+    }
+
+    .product-card button.added {
+      background: #62c68a;
+      opacity: 0.9;
+      cursor: default;
+    }
+
+    .product-card button.added:hover {
+      transform: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px 30px;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        justify-content: center;
+      }
+
+      nav {
+        margin-top: 14px;
+      }
+
+      .hero {
+        padding: 28px 22px;
+      }
+
+      .product-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">EasyBuy</div>
+    <nav>
+      <a href="frontend.html">Home</a>
+      <a href="shopping.html">Shop</a>
+      <a href="cart.html">Cart <span id="cartCount"></span></a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Shop Our Products</h1>
+      <p>Browse the latest items and add favorites to your cart. Your cart is saved in the browser so you can review it on the Cart page.</p>
+      <div class="products-grid">
+        <div class="product-card" data-id="1" data-name="Classic Watch" data-price="79.99">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcNuUtMhd1pARM-AwjPIPFWKIYX7qardrryWzJLkD-rQ&s=10" alt="Classic Watch">
+          <h3>Classic Watch</h3>
+          <p>Elegant design with leather strap for everyday wear.</p>
+          <div class="price">$79.99</div>
+          <button onclick="addToCart(this)">Add to Cart</button>
+        </div>
+
+        <div class="product-card" data-id="2" data-name="Sneaker Shoes" data-price="59.99">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwkRNLgzQ_o3nNWadVUf6_VeHBIYacF6RUpsPvLpzgww&s=10" alt="Sneaker Shoes">
+          <h3>Sneaker Shoes</h3>
+          <p>Comfortable sneakers with a modern look and strong traction.</p>
+          <div class="price">$59.99</div>
+          <button onclick="addToCart(this)">Add to Cart</button>
+        </div>
+
+        <div class="product-card" data-id="3" data-name="Travel Bag" data-price="45.00">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWXmcdyRoDuev3_AVK_HslAJvr4SouOPezVvEtWTMJpw&s=10" alt="Travel Bag">
+          <h3>Travel Bag</h3>
+          <p>Durable bag with multiple compartments for your trips.</p>
+          <div class="price">$45.00</div>
+          <button onclick="addToCart(this)">Add to Cart</button>
+        </div>
+
+        <div class="product-card" data-id="4" data-name="Wireless Headphones" data-price="99.99">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiHYz0ka_oqU-1Qyiw7KJQKTCk1PXGfsr0ZM4n5oN72A&s=10" alt="Wireless Headphones">
+          <h3>Wireless Headphones</h3>
+          <p>Noise cancelling audio with long battery life and comfort fit.</p>
+          <div class="price">$99.99</div>
+          <button onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Made with HTML, CSS, and JavaScript for a simple shopping front end.
+  </footer>
+
+  <script>
+    const CART_STORAGE_KEY = 'easybuyCart';
+
+    function loadCart() {
+      return JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    }
+
+    function updateCartCount() {
+      const cart = loadCart();
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const countElement = document.getElementById('cartCount');
+      if (countElement) {
+        countElement.textContent = count ? `(${count})` : '';
+      }
+    }
+
+    function getCart() {
+      return loadCart();
+    }
+
+    function updateAddButtons() {
+      const cart = getCart();
+      const productCards = document.querySelectorAll('.product-card');
+      productCards.forEach(card => {
+        const id = card.dataset.id;
+        const button = card.querySelector('button');
+        const isAdded = cart.some(item => item.id === id);
+
+        if (isAdded) {
+          button.textContent = 'Added';
+          button.classList.add('added');
+          button.disabled = true;
+        } else {
+          button.textContent = 'Add to Cart';
+          button.classList.remove('added');
+          button.disabled = false;
+        }
+      });
+    }
+
+    function addToCart(button) {
+      const card = button.closest('.product-card');
+      const id = card.dataset.id;
+      const name = card.dataset.name;
+      const price = parseFloat(card.dataset.price);
+      const cart = loadCart();
+      const item = cart.find(product => product.id === id);
+
+      if (!item) {
+        cart.push({ id, name, price, quantity: 1 });
+      }
+
+      saveCart(cart);
+      updateCartCount();
+      updateAddButtons();
+    }
+
+    updateCartCount();
+    updateAddButtons();
+  </script>
+</body>
+</html>

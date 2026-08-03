@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyBuy Payment Desk</title>
+  <style>
+    :root {
+      --primary: #4c61ad;
+      --secondary: #1a84bd;
+      --accent: #65d2f0;
+      --bg: #14203a;
+      --surface: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #eef2ff;
+      --muted: rgba(255, 255, 255, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top left, rgba(100, 162, 255, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255, 129, 196, 0.12), transparent 30%),
+        linear-gradient(180deg, #0f1526 0%, #192a4b 100%);
+      min-height: 100vh;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      padding: 22px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    nav a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 40px 0 60px;
+    }
+
+    .payment-panel {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 32px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(20px);
+      margin-top: 32px;
+    }
+
+    .payment-panel h2,
+    .payment-panel h3 {
+      color: white;
+      margin-bottom: 18px;
+    }
+
+    .payment-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 28px;
+    }
+
+    .payment-details,
+    .payment-summary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .payment-details label,
+    .payment-summary p {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+
+    .payment-details input,
+    .payment-details select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+
+    .payment-details input::placeholder {
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .payment-summary .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    .payment-summary .summary-total {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-top: 16px;
+    }
+
+    .button-primary {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 18px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .button-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .empty-message {
+      padding: 28px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      text-align: center;
+      color: var(--muted);
+      margin-top: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .payment-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">EasyBuy</div>
+    <nav>
+      <a href="frontend.html">Home</a>
+      <a href="shopping.html">Shop</a>
+      <a href="cart.html">Cart</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="payment-panel">
+      <h2>Payment Desk</h2>
+      <div class="payment-grid">
+        <div class="payment-details" id="paymentDetails">
+          <h3>Payment Information</h3>
+          <label for="name">Name on card</label>
+          <input type="text" id="name" placeholder="Jane Doe" />
+
+          <label for="cardNumber">Card number</label>
+          <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" />
+
+          <label for="expiry">Expiry date</label>
+          <input type="text" id="expiry" placeholder="MM / YY" maxlength="7" />
+
+          <label for="cvc">CVC</label>
+          <input type="text" id="cvc" placeholder="123" maxlength="4" />
+
+          <button class="button-primary" onclick="completePayment()">Confirm Payment</button>
+        </div>
+
+        <div class="payment-summary" id="paymentSummary">
+          <h3>Order Summary</h3>
+          <div id="summaryItems"></div>
+          <div class="summary-item">
+            <span>Subtotal</span>
+            <strong id="subtotalAmount">$0.00</strong>
+          </div>
+          <div class="summary-item">
+            <span>Shipping</span>
+            <strong>$5.00</strong>
+          </div>
+          <div class="summary-item summary-total">
+            <span>Total</span>
+            <strong id="totalAmount">$0.00</strong>
+          </div>
+        </div>
+      </div>
+      <div class="empty-message" id="emptyMessage" style="display:none;">
+        Your cart is empty. Add items to the cart before completing payment.
+      </div>
+    </section>
+  </main>
+
+  <footer style="text-align:center; padding:24px 30px; color: rgba(255,255,255,0.75); font-size:0.95rem;">
+    Secure checkout from EasyBuy.
+  </footer>
+
+  <script>
+    const CART_STORAGE_KEY = 'easybuyCart';
+    const SHIPPING_FEE = 5.00;
+
+    function loadCart() {
+      return JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    }
+
+    function formatCurrency(value) {
+      return `$${value.toFixed(2)}`;
+    }
+
+    function renderPaymentSummary() {
+      const cart = loadCart();
+      const summaryItems = document.getElementById('summaryItems');
+      const subtotalAmount = document.getElementById('subtotalAmount');
+      const totalAmount = document.getElementById('totalAmount');
+      const paymentDetails = document.getElementById('paymentDetails');
+      const emptyMessage = document.getElementById('emptyMessage');
+
+      summaryItems.innerHTML = '';
+      if (cart.length === 0) {
+        paymentDetails.style.display = 'none';
+        document.getElementById('paymentSummary').style.display = 'none';
+        emptyMessage.style.display = 'block';
+        return;
+      }
+
+      paymentDetails.style.display = '';
+      document.getElementById('paymentSummary').style.display = '';
+      emptyMessage.style.display = 'none';
+
+      cart.forEach(item => {
+        const itemRow = document.createElement('div');
+        itemRow.className = 'summary-item';
+        itemRow.innerHTML = `<span>${item.name} x${item.quantity}</span><strong>${formatCurrency(item.price * item.quantity)}</strong>`;
+        summaryItems.appendChild(itemRow);
+      });
+
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      subtotalAmount.textContent = formatCurrency(subtotal);
+      totalAmount.textContent = formatCurrency(subtotal + SHIPPING_FEE);
+    }
+
+    function completePayment() {
+      const cart = loadCart();
+      if (cart.length === 0) {
+        alert('Your cart is empty. Add items to checkout.');
+        return;
+      }
+
+      const name = document.getElementById('name').value.trim();
+      const cardNumber = document.getElementById('cardNumber').value.trim();
+      const expiry = document.getElementById('expiry').value.trim();
+      const cvc = document.getElementById('cvc').value.trim();
+
+      if (!name || !cardNumber || !expiry || !cvc) {
+        alert('Please complete all payment fields before confirming.');
+        return;
+      }
+
+      saveCart([]);
+      renderPaymentSummary();
+      alert('Payment successful! Thank you for shopping with EasyBuy.');
+      window.location.href = 'frontend.html';
+    }
+
+    renderPaymentSummary();
+  </script>
+</body>
+</html>

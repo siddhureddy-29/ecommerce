@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyBuy</title>
+  <style>
+    :root {
+      --primary: #4c61ad;
+      --secondary: #1a84bd;
+      --surface: rgba(255, 255, 255, 0.16);
+      --surface-strong: rgba(255, 255, 255, 0.28);
+      --bg: #10172d;
+      --text: #eef2ff;
+      --muted: #bfc7df;
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top left, rgba(90, 142, 255, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(255, 136, 180, 0.16), transparent 30%),
+        linear-gradient(180deg, #0e1632 0%, #172a4a 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 24px 30px;
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    nav a {
+      color: rgba(255, 255, 255, 0.84);
+      text-decoration: none;
+      margin-left: 24px;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    main {
+      width: min(1100px, 94%);
+      margin: 0 auto;
+      padding: 40px 0 70px;
+    }
+
+    .hero {
+      display: grid;
+      place-items: center;
+      min-height: 460px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 40px;
+      background: linear-gradient(135deg, rgba(76, 97, 173, 0.85) 0%, rgba(26, 132, 189, 0.85) 100%);
+      box-shadow: var(--shadow);
+      padding: 60px 36px;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.7;
+    }
+
+    .hero::before {
+      width: 280px;
+      height: 280px;
+      background: rgba(255, 255, 255, 0.14);
+      top: -50px;
+      left: -40px;
+    }
+
+    .hero::after {
+      width: 220px;
+      height: 220px;
+      background: rgba(255, 255, 255, 0.08);
+      bottom: -40px;
+      right: -30px;
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 780px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 4vw, 4.2rem);
+      line-height: 1.02;
+      margin-bottom: 18px;
+      letter-spacing: -0.05em;
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.82);
+      max-width: 680px;
+      margin: 0 auto 30px;
+      font-size: 1.05rem;
+    }
+
+    .hero button {
+      padding: 16px 34px;
+      border-radius: 999px;
+      border: none;
+      background: white;
+      color: var(--primary);
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 20px 40px rgba(76, 97, 173, 0.25);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .hero button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 26px 55px rgba(76, 97, 173, 0.3);
+    }
+
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      padding-top: 48px;
+    }
+
+    .info-panel {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 34px;
+      padding: 32px 36px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .info-panel h2 {
+      margin-bottom: 16px;
+      font-size: 2rem;
+      letter-spacing: -0.04em;
+    }
+
+    .info-panel p {
+      color: rgba(255, 255, 255, 0.78);
+      max-width: 850px;
+      line-height: 1.7;
+    }
+
+    .categories {
+      margin: 50px 0 0;
+    }
+
+    .categories h2 {
+      margin-bottom: 24px;
+      font-size: 2rem;
+      color: white;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 22px;
+    }
+
+    .category-card {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 24px 55px rgba(0, 0, 0, 0.12);
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+      backdrop-filter: blur(16px);
+      cursor: pointer;
+    }
+
+    .category-card:hover {
+      transform: translateY(-6px) rotateX(1deg);
+      border-color: rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .category-card .category-icon {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    .category-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .category-card p {
+      color: rgba(255, 255, 255, 0.76);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .category-card a {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        padding: 42px 24px;
+        min-height: 420px;
+      }
+
+      .hero h1 {
+        font-size: 2.6rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .info-panel {
+        padding: 26px 22px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      header {
+        justify-content: center;
+      }
+
+      nav {
+        margin-top: 16px;
+      }
+
+      .hero {
+        border-radius: 28px;
+      }
+
+      .info-panel {
+        border-radius: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">EasyBuy</div>
+    <nav>
+      <a href="frontend.html">Home</a>
+      <a href="shopping.html">Shop</a>
+      <a href="cart.html">Cart <span id="cartCount"></span></a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1>Find Your Favorite Products</h1>
+        <p>Browse trending items, add them to your cart, and see your total instantly. A simple storefront design to get your shopping site started.</p>
+        <button onclick="window.location.href='shopping.html'">Shop Now</button>
+      </div>
+    </section>
+
+    <section class="container">
+      <section class="categories">
+        <h2>Shop by Category</h2>
+        <div class="categories-grid">
+          <div class="category-card" onclick="window.location.href='shopping.html'">
+            <div class="category-icon">⌚</div>
+            <h3>Accessories</h3>
+            <p>Discover stylish watches, bags, and everyday items to complete your look.</p>
+            <a href="shopping.html">Browse Accessories →</a>
+          </div>
+
+          <div class="category-card" onclick="window.location.href='shopping.html'">
+            <div class="category-icon">👟</div>
+            <h3>Fashion</h3>
+            <p>Shop the latest shoes, apparel, and fashion essentials for every season.</p>
+            <a href="shopping.html">Browse Fashion →</a>
+          </div>
+
+          <div class="category-card" onclick="window.location.href='shopping.html'">
+            <div class="category-icon">🎧</div>
+            <h3>Electronics</h3>
+            <p>Upgrade your tech with headphones, gadgets, and smart devices.</p>
+            <a href="shopping.html">Browse Electronics →</a>
+          </div>
+
+          <div class="category-card" onclick="window.location.href='shopping.html'">
+            <div class="category-icon">🧳</div>
+            <h3>Travel</h3>
+            <p>Get ready for your next trip with bags and travel accessories made for adventure.</p>
+            <a href="shopping.html">Browse Travel →</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-panel">
+        <h2>Welcome to EasyBuy</h2>
+        <p>Use the Shop page to browse products and the Cart page to review your selected items. Your shopping cart persists across pages in your browser.</p>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    Made with HTML, CSS, and JavaScript for a simple shopping front end.
+  </footer>
+
+  <script>
+    const CART_STORAGE_KEY = 'easybuyCart';
+
+    function loadCart() {
+      return JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
+    }
+
+    function updateCartCount() {
+      const cart = loadCart();
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const countElement = document.getElementById('cartCount');
+      if (countElement) {
+        countElement.textContent = count ? `(${count})` : '';
+      }
+    }
+
+    updateCartCount();
+  </script>
+</body>
+</html>
